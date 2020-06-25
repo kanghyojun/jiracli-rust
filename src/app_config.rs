@@ -17,8 +17,8 @@ pub struct Config {
     pub company_id: String,
 }
 
-pub trait JsonData: Sized {
-   fn from_path() -> Result<Self, Box<dyn Error>>;
+pub trait JsonData {
+   fn from_path() -> Result<Self, Box<dyn Error>> where Self: Sized;
 }
 
 trait ReadAppDir {
