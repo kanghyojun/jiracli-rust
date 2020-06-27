@@ -1,5 +1,7 @@
 # jiracli-rust
 
+![](https://github.com/kanghyojun/jiracli-rust/workflows/test/badge.svg)
+
 ## Installation
 
 ```bash
