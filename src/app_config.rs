@@ -1,7 +1,7 @@
-use std::error::Error;
 use std::fs;
 use std::path::PathBuf;
 
+use anyhow::Result;
 use dirs::{config_dir, data_dir};
 use serde::{Deserialize, Serialize};
 
@@ -18,17 +18,17 @@ pub struct Config {
 }
 
 pub trait JsonData {
-    fn from_path() -> Result<Self, Box<dyn Error>>
+    fn from_path() -> Result<Self>
     where
         Self: Sized;
 }
 
 trait ReadAppDir {
-    fn read_from_appdir_to_string(&self, fname: &'static str) -> Result<String, Box<dyn Error>>;
+    fn read_from_appdir_to_string(&self, fname: &'static str) -> Result<String>;
 }
 
 impl ReadAppDir for PathBuf {
-    fn read_from_appdir_to_string(&self, fname: &'static str) -> Result<String, Box<dyn Error>> {
+    fn read_from_appdir_to_string(&self, fname: &'static str) -> Result<String> {
         let path = self.join(DIR).join(fname);
         let raw = fs::read_to_string(&path)?;
 
@@ -42,7 +42,7 @@ struct JsonReader {
 }
 
 impl JsonReader {
-    fn to_str(&self) -> Result<String, Box<dyn Error>> {
+    fn to_str(&self) -> Result<String> {
         let raw = self.base_path.read_from_appdir_to_string(self.fname)?;
 
         Ok(raw)
@@ -50,7 +50,7 @@ impl JsonReader {
 }
 
 impl JsonData for Token {
-    fn from_path() -> Result<Token, Box<dyn Error>> {
+    fn from_path() -> Result<Token> {
         let reader = JsonReader {
             base_path: data_dir().unwrap(),
             fname: "token.json",
@@ -62,7 +62,7 @@ impl JsonData for Token {
 }
 
 impl JsonData for Config {
-    fn from_path() -> Result<Config, Box<dyn Error>> {
+    fn from_path() -> Result<Config> {
         let reader = JsonReader {
             base_path: config_dir().unwrap(),
             fname: "config.json",

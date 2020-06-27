@@ -1,12 +1,10 @@
-use std::error::Error;
-
 mod app_config;
 mod http;
 
 use app_config::{Config, JsonData, Token};
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn Error>> {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let transport = http::HttpTransport {
         config: Config::from_path()?,
         token: Token::from_path()?,
