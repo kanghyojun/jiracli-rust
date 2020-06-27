@@ -5,9 +5,10 @@ authors = ["Kang Hyojun <iam.kanghyojun@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+anyhow = "1.0.31"
+async-trait = "0.1.36"
+dirs = { version = "2.0.2" }
 reqwest = { version = "0.10", features = ["json"] }
-tokio = { version = "0.2", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-dirs = { version = "2.0.2" }
-async-trait = "0.1.36"
+tokio = { version = "0.2", features = ["full"] }
