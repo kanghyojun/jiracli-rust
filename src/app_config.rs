@@ -5,7 +5,7 @@ use std::path::PathBuf;
 use dirs::{config_dir, data_dir};
 use serde::{Deserialize, Serialize};
 
-const DIR: &'static str = "jiraoauth";
+const DIR: &str = "jiraoauth";
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Token {

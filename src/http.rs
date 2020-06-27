@@ -21,10 +21,10 @@ pub struct HttpTransport {
 #[async_trait]
 impl Transport for HttpTransport {
     fn base_url(&self) -> String {
-        String::from(format!(
+        format!(
             "https://api.atlassian.com/ex/jira/{}/rest/api/3/",
             self.config.company_id
-        ))
+        )
     }
 
     async fn req_get(&self, path: &str) -> Result<String, Box<dyn Error>> {
@@ -48,8 +48,7 @@ where T: Transport
     pub transport: T,
 }
 
-impl JiraClient<T>
-where T: Transport {
+impl<T: Transport> JiraClient<T> {
     pub async fn get_issue(&self, key: &str) -> Result<String, Box<dyn Error>> {
         let resp = self.transport
             .req_get(&format!("./issue/{}", key))

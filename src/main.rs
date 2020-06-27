@@ -11,7 +11,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         config: Config::from_path()?,
         token: Token::from_path()?,
     };
-    let jira_client = http::JiraClient { transport: transport, };
+    let jira_client = http::JiraClient { transport };
     let resp = jira_client.get_issue("SOA-402").await?;
 
     println!("{:#?}", resp);
