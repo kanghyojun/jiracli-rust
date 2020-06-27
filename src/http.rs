@@ -43,16 +43,15 @@ impl Transport for HttpTransport {
 }
 
 pub struct JiraClient<T>
-where T: Transport
+where
+    T: Transport,
 {
     pub transport: T,
 }
 
 impl<T: Transport> JiraClient<T> {
     pub async fn get_issue(&self, key: &str) -> Result<String, Box<dyn Error>> {
-        let resp = self.transport
-            .req_get(&format!("./issue/{}", key))
-            .await?;
+        let resp = self.transport.req_get(&format!("./issue/{}", key)).await?;
 
         Ok(resp)
     }

@@ -1,9 +1,9 @@
 use std::error::Error;
 
-mod http;
 mod app_config;
+mod http;
 
-use app_config::{Config, Token, JsonData};
+use app_config::{Config, JsonData, Token};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {

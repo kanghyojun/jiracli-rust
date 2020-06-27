@@ -18,7 +18,9 @@ pub struct Config {
 }
 
 pub trait JsonData {
-   fn from_path() -> Result<Self, Box<dyn Error>> where Self: Sized;
+    fn from_path() -> Result<Self, Box<dyn Error>>
+    where
+        Self: Sized;
 }
 
 trait ReadAppDir {
