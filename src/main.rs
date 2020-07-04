@@ -1,5 +1,6 @@
 mod app_config;
 mod http;
+mod web;
 
 use structopt::StructOpt;
 
@@ -40,7 +41,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("{:#?}", resp);
         }
         Opt::Authorize {} => {
-            println!("TODO: authorized ...");
+            web::run().await;
+            println!("hi");
         }
         Opt::Init {
             client_id,
