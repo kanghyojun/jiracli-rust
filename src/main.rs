@@ -3,7 +3,7 @@ use clap::{App, Arg, SubCommand};
 mod app_config;
 mod http;
 
-use app_config::{Config, JsonData, Token};
+use app_config::{Config, from_path, save};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -52,8 +52,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     if let Some(matches) = matches.subcommand_matches("issue") {
         let transport = http::HttpTransport {
-            config: Config::from_path()?,
-            token: Token::from_path()?,
+            config: from_path()?,
+            token: from_path()?,
         };
         let jira_client = http::JiraClient { transport };
         let key = matches.value_of("KEY").unwrap();
@@ -70,7 +70,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         println!("Save config...");
 
-        match conf.save() {
+        match save(conf) {
             Ok(_) => println!("Done!"),
             Err(_) => println!("Error occured, Try agian."),
         }

@@ -37,59 +37,44 @@ impl JsonReader {
     }
 }
 
-pub trait JsonData {
-    fn from_path() -> Result<Self>
-    where
-        Self: Sized;
-
-    fn json_reader() -> JsonReader;
-
-    fn save(&self) -> Result<()>
-    where
-        Self: DeserializeOwned;
+pub trait JsonReadable {
+    fn reader() -> JsonReader;
 }
 
-impl JsonData {
-    fn save(&self) -> Result<()> {
-        let raw = serde_json::to_string(&self)?;
-        let r = fs::write(Self::json_reader().file_path(), raw)?;
-
-        Ok(r)
-    }
-}
-
-impl JsonData for Token {
-    fn json_reader() -> JsonReader {
+impl JsonReadable for Token {
+    fn reader() -> JsonReader {
         JsonReader {
             base_path: data_dir().unwrap(),
             fname: "token.json",
         }
     }
-
-    fn from_path() -> Result<Token> {
-        let reader = Token::json_reader();
-        let d: Token = serde_json::from_str(&reader.to_str()?)?;
-
-        Ok(d)
-    }
 }
 
-impl JsonData for Config {
-    fn json_reader() -> JsonReader {
+impl JsonReadable for Config {
+    fn reader() -> JsonReader {
         JsonReader {
             base_path: config_dir().unwrap(),
             fname: "config.json",
         }
     }
-
-    fn from_path() -> Result<Config> {
-        let reader = Config::json_reader();
-        let d: Config = serde_json::from_str(&reader.to_str()?)?;
-
-        Ok(d)
-    }
 }
 
-impl Config {
-    pub fn save(&self) -> Result<()> {}
+pub fn from_path<T>() -> Result<T>
+where
+    T: JsonReadable + DeserializeOwned
+{
+    let reader = T::reader();
+    let d: T = serde_json::from_str(&reader.to_str()?)?;
+
+    Ok(d)
+}
+
+pub fn save<T>(payload: T) -> Result<()>
+where
+    T: JsonReadable + Serialize
+{
+    let raw = serde_json::to_string(&payload)?;
+    let r = fs::write(T::reader().file_path(), raw)?;
+
+    Ok(r)
 }
