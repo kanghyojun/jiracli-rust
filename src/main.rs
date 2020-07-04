@@ -3,7 +3,7 @@ use clap::{App, Arg, SubCommand};
 mod app_config;
 mod http;
 
-use app_config::{Config, from_path, save};
+use app_config::{from_path, save, Config};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

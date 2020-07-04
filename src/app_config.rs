@@ -3,8 +3,8 @@ use std::path::PathBuf;
 
 use anyhow::Result;
 use dirs::{config_dir, data_dir};
-use serde::{Deserialize, Serialize};
 use serde::de::DeserializeOwned;
+use serde::{Deserialize, Serialize};
 
 const DIR: &str = "jiraoauth";
 
@@ -61,7 +61,7 @@ impl JsonReadable for Config {
 
 pub fn from_path<T>() -> Result<T>
 where
-    T: JsonReadable + DeserializeOwned
+    T: JsonReadable + DeserializeOwned,
 {
     let reader = T::reader();
     let d: T = serde_json::from_str(&reader.to_str()?)?;
@@ -71,10 +71,9 @@ where
 
 pub fn save<T>(payload: T) -> Result<()>
 where
-    T: JsonReadable + Serialize
+    T: JsonReadable + Serialize,
 {
     let raw = serde_json::to_string(&payload)?;
-    let r = fs::write(T::reader().file_path(), raw)?;
 
-    Ok(r)
+    Ok(fs::write(T::reader().file_path(), raw)?)
 }
